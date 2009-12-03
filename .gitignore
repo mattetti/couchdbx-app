@@ -1,0 +1,6 @@
+CouchDBX.xcodeproj/mattetti.pbxuser
+.DS_Store
+*/.DS_Store
+build
+macruby_version/CouchDBX/build/
+macruby_version/CouchDBX/CouchDBX.xcodeproj/mattetti.*
