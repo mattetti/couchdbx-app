@@ -45,7 +45,7 @@ class Controller
     
     couchdbx_path = "#{NSBundle.mainBundle.resourcePath}/couchdbx-core"
     task.currentDirectoryPath = couchdbx_path
-    launch_path = "#{couchdbx_path}/couchdb_0.10.0/bin/couchdb"
+    launch_path = "#{couchdbx_path}/couchdb/bin/couchdb"
     task.launchPath = launch_path
     raise "couchdbx-core missing, expected to be found at: #{launch_path}" unless File.exist?(launch_path)
     

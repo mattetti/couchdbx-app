@@ -18,26 +18,26 @@
 			name = "Unit Tests";
 			productName = "Unit Tests";
 		};
-		4D1A51A110A4FF5D0046A98A /* Compile */ = {
+		2B8ABF0A10C8716600A6D587 /* Add couchdbx-core */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 4D1A51AB10A4FF6A0046A98A /* Build configuration list for PBXAggregateTarget "Compile" */;
+			buildConfigurationList = 2B8ABF1410C8716B00A6D587 /* Build configuration list for PBXAggregateTarget "Add couchdbx-core" */;
 			buildPhases = (
-				4D1A51A010A4FF5D0046A98A /* ShellScript */,
+				2B8ABF0910C8716600A6D587 /* ShellScript */,
 			);
 			dependencies = (
 			);
-			name = Compile;
-			productName = Compile;
+			name = "Add couchdbx-core";
+			productName = "Add couchdbx-core";
 		};
-		4D1A51A510A4FF640046A98A /* Embed */ = {
+		4D1A51A510A4FF640046A98A /* Embed and Compile */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 4D1A51AC10A4FF6A0046A98A /* Build configuration list for PBXAggregateTarget "Embed" */;
+			buildConfigurationList = 4D1A51AC10A4FF6A0046A98A /* Build configuration list for PBXAggregateTarget "Embed and Compile" */;
 			buildPhases = (
 				4D1A51A410A4FF640046A98A /* ShellScript */,
 			);
 			dependencies = (
 			);
-			name = Embed;
+			name = "Embed and Compile";
 			productName = Embed;
 		};
 /* End PBXAggregateTarget section */
@@ -232,8 +232,8 @@
 			targets = (
 				8D1107260486CEB800E47090 /* CouchDBX */,
 				172754BD107597F200D0347B /* Unit Tests */,
-				4D1A51A110A4FF5D0046A98A /* Compile */,
-				4D1A51A510A4FF640046A98A /* Embed */,
+				4D1A51A510A4FF640046A98A /* Embed and Compile */,
+				2B8ABF0A10C8716600A6D587 /* Add couchdbx-core */,
 			);
 		};
 /* End PBXProject section */
@@ -271,7 +271,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/macruby Tests/run_suite.rb";
 		};
-		4D1A51A010A4FF5D0046A98A /* ShellScript */ = {
+		2B8ABF0910C8716600A6D587 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -282,7 +282,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# The macruby_deploy command-line tool with the --compile argument will compile every Ruby source file of your .app into machine code. Default options will be used. Pass the -h option to get more information.\nPATH=\"$PATH:/usr/local/bin\" macruby_deploy --compile \"$TARGET_BUILD_DIR/$PROJECT_NAME.app\"";
+			shellScript = "#!/bin/sh -e\n# this target copies couchdbx-core from the root of this project to the resources folder\n# couchdbx-core is a standalone version of couchdb you can build from http://github.com/janl/couchdbx-core\n# you can download and extract couchdbx-core from http://github.com/janl/couchdbx-core/downloads if you don't\n# feel like compiling it yourself.\ncp -r ../../couchdbx-core";
 		};
 		4D1A51A410A4FF640046A98A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -295,7 +295,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# The macruby_deploy command-line tool with the --embed argument will make sure the MacRuby framework will be embedded in your .app. Default options will be used. Pass the -h option to get more information.\nPATH=\"$PATH:/usr/local/bin\" macruby_deploy --embed \"$TARGET_BUILD_DIR/$PROJECT_NAME.app\"";
+			shellScript = "# The macruby_deploy command-line tool with the --embed argument will make sure the MacRuby framework will be embedded in your .app. Default options will be used. Pass the -h option to get more information.\nPATH=\"$PATH:/usr/local/bin\" macruby_deploy --no-stdlib --compile --embed \"$TARGET_BUILD_DIR/$PROJECT_NAME.app\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -351,23 +351,23 @@
 			};
 			name = Release;
 		};
-		4D1A51A210A4FF5D0046A98A /* Debug */ = {
+		2B8ABF0B10C8716600A6D587 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = Compile;
+				PRODUCT_NAME = "Add couchdbx-core";
 			};
 			name = Debug;
 		};
-		4D1A51A310A4FF5D0046A98A /* Release */ = {
+		2B8ABF0C10C8716600A6D587 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				PRODUCT_NAME = Compile;
+				PRODUCT_NAME = "Add couchdbx-core";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -467,16 +467,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4D1A51AB10A4FF6A0046A98A /* Build configuration list for PBXAggregateTarget "Compile" */ = {
+		2B8ABF1410C8716B00A6D587 /* Build configuration list for PBXAggregateTarget "Add couchdbx-core" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4D1A51A210A4FF5D0046A98A /* Debug */,
-				4D1A51A310A4FF5D0046A98A /* Release */,
+				2B8ABF0B10C8716600A6D587 /* Debug */,
+				2B8ABF0C10C8716600A6D587 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4D1A51AC10A4FF6A0046A98A /* Build configuration list for PBXAggregateTarget "Embed" */ = {
+		4D1A51AC10A4FF6A0046A98A /* Build configuration list for PBXAggregateTarget "Embed and Compile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4D1A51A610A4FF640046A98A /* Debug */,
