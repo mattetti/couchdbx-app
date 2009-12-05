@@ -2,3 +2,46 @@
 
 Get http://github.com/janl/couchdbx-core/ and compile it. Copy the resulting `couchdbx-core` folder into the top level dir of this project. Launch Xcode and build the app.
 
+## MacRuby version
+
+You need to use the specific XCode target to copy couchdbx-core to your build folder.
+If you want to run more than one instance of couchdb, add a new local_<id>.ini file to couchdbx-core/couchdb/etc/couchdb
+
+Don't forget to also create a new folder for the db data and point to it. Here is an example of my local_test.ini file
+
+  ; CouchDB Configuration Settings
+
+  ; Custom settings should be made in this file. They will override settings
+  ; in default.ini, but unlike changes made to default.ini, this file won't be
+  ; overwritten on server upgrade.
+
+  [couchdb]
+  ;max_document_size = 4294967296 ; bytes
+
+  [httpd]
+  port = 5985
+  ;bind_address = 127.0.0.1
+
+  [log]
+  ;level = debug
+
+  [couch_httpd_auth]
+  ;secret = replace this with a real secret
+
+  [couchdb]
+  ;directory used to save/load this instance db 
+  database_dir = couchdb_0.10.0/var/lib/mattetti
+  view_index_dir = couchdb_0.10.0/var/lib/mattetti
+
+  [update_notification]
+  ;unique notifier name=/full/path/to/exe -with "cmd line arg"
+
+  ; To create an admin account uncomment the '[admins]' section below and add a
+  ; line in the format 'username = password'. When you next start CouchDB, it
+  ; will change the password to a hash (so that your passwords don't linger
+  ; around in plain-text files). You can add more admin accounts with more
+  ; 'username = password' lines. Don't forget to restart CouchDB after
+  ; changing this.
+  [admins]
+  ;admin = mysecretpassword
+

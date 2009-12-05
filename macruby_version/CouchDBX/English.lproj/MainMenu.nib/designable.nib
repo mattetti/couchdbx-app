@@ -21,8 +21,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="391"/>
 			<integer value="205"/>
+			<integer value="376"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -790,6 +790,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>2F4CFBD6-1ADC-4776-B592-F305771432DC</string>
 							<string>570F6941-F400-4820-AD96-A576C430D6EB</string>
+							<string>FEDA5BA7-280D-4AD6-A4C0-A040133839B3</string>
 							<string>NSToolbarFlexibleSpaceItem</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -838,6 +839,61 @@
 								<bool key="NSToolbarIsUserRemovable">YES</bool>
 								<int key="NSToolbarItemVisibilityPriority">0</int>
 							</object>
+							<object class="NSToolbarItem" id="5771007">
+								<object class="NSMutableString" key="NSToolbarItemIdentifier">
+									<characters key="NS.bytes">FEDA5BA7-280D-4AD6-A4C0-A040133839B3</characters>
+								</object>
+								<string key="NSToolbarItemLabel">Instance to monitor</string>
+								<string key="NSToolbarItemPaletteLabel">Instance to monitor</string>
+								<nil key="NSToolbarItemToolTip"/>
+								<object class="NSPopUpButton" key="NSToolbarItemView" id="789267605">
+									<reference key="NSNextResponder"/>
+									<int key="NSvFlags">268</int>
+									<string key="NSFrame">{{6, 14}, {100, 25}}</string>
+									<reference key="NSSuperview"/>
+									<bool key="NSEnabled">YES</bool>
+									<object class="NSPopUpButtonCell" key="NSCell" id="302283383">
+										<int key="NSCellFlags">-2076049856</int>
+										<int key="NSCellFlags2">2048</int>
+										<object class="NSFont" key="NSSupport" id="177886902">
+											<string key="NSName">LucidaGrande</string>
+											<double key="NSSize">13</double>
+											<int key="NSfFlags">1044</int>
+										</object>
+										<reference key="NSControlView" ref="789267605"/>
+										<int key="NSButtonFlags">-2038284033</int>
+										<int key="NSButtonFlags2">163</int>
+										<string key="NSAlternateContents"/>
+										<string key="NSKeyEquivalent"/>
+										<int key="NSPeriodicDelay">400</int>
+										<int key="NSPeriodicInterval">75</int>
+										<nil key="NSMenuItem"/>
+										<bool key="NSMenuItemRespectAlignment">YES</bool>
+										<object class="NSMenu" key="NSMenu" id="482150062">
+											<string key="NSTitle">OtherViews</string>
+											<object class="NSMutableArray" key="NSMenuItems">
+												<bool key="EncodedWithXMLCoder">YES</bool>
+											</object>
+											<reference key="NSMenuFont" ref="177886902"/>
+										</object>
+										<int key="NSSelectedIndex">-1</int>
+										<int key="NSPreferredEdge">1</int>
+										<bool key="NSUsesItemFromMenu">YES</bool>
+										<bool key="NSAltersState">YES</bool>
+										<int key="NSArrowPosition">2</int>
+									</object>
+								</object>
+								<nil key="NSToolbarItemImage"/>
+								<nil key="NSToolbarItemTarget"/>
+								<nil key="NSToolbarItemAction"/>
+								<string key="NSToolbarItemMinSize">{100, 25}</string>
+								<string key="NSToolbarItemMaxSize">{100, 25}</string>
+								<bool key="NSToolbarItemEnabled">YES</bool>
+								<bool key="NSToolbarItemAutovalidates">YES</bool>
+								<int key="NSToolbarItemTag">0</int>
+								<bool key="NSToolbarIsUserRemovable">YES</bool>
+								<int key="NSToolbarItemVisibilityPriority">0</int>
+							</object>
 							<object class="NSToolbarFlexibleSpaceItem" id="1001954474">
 								<string key="NSToolbarItemIdentifier">NSToolbarFlexibleSpaceItem</string>
 								<string key="NSToolbarItemLabel"/>
@@ -872,10 +928,12 @@
 						<reference ref="723555988"/>
 						<reference ref="1001954474"/>
 						<reference ref="930490021"/>
+						<reference ref="5771007"/>
 					</object>
 					<object class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="723555988"/>
+						<reference ref="5771007"/>
 						<reference ref="1001954474"/>
 						<reference ref="930490021"/>
 					</object>
@@ -1486,6 +1544,22 @@
 						<reference key="destination" ref="723555988"/>
 					</object>
 					<int key="connectionID">446</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">change_instance:</string>
+						<reference key="source" ref="259954524"/>
+						<reference key="destination" ref="302283383"/>
+					</object>
+					<int key="connectionID">454</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">instance_selector</string>
+						<reference key="source" ref="259954524"/>
+						<reference key="destination" ref="482150062"/>
+					</object>
+					<int key="connectionID">457</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2107,6 +2181,7 @@
 							<reference ref="1001954474"/>
 							<reference ref="723555988"/>
 							<reference ref="930490021"/>
+							<reference ref="5771007"/>
 						</object>
 						<reference key="parent" ref="972006081"/>
 					</object>
@@ -2193,6 +2268,41 @@
 						<int key="objectID">425</int>
 						<reference key="object" ref="730010406"/>
 						<reference key="parent" ref="364911401"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">453</int>
+						<reference key="object" ref="5771007"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="789267605"/>
+						</object>
+						<reference key="parent" ref="757078045"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">447</int>
+						<reference key="object" ref="789267605"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="302283383"/>
+						</object>
+						<reference key="parent" ref="5771007"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">448</int>
+						<reference key="object" ref="302283383"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="482150062"/>
+						</object>
+						<reference key="parent" ref="789267605"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">449</int>
+						<reference key="object" ref="482150062"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
+						<reference key="parent" ref="302283383"/>
 					</object>
 				</object>
 			</object>
@@ -2354,6 +2464,10 @@
 					<string>441.IBPluginDependency</string>
 					<string>442.IBPluginDependency</string>
 					<string>443.IBPluginDependency</string>
+					<string>447.IBPluginDependency</string>
+					<string>448.IBPluginDependency</string>
+					<string>449.IBEditorWindowLastContentRect</string>
+					<string>449.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>5.ImportedFromIB2</string>
 					<string>56.IBPluginDependency</string>
@@ -2525,13 +2639,13 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{190, 38}, {1171, 663}}</string>
+					<string>{{95, 1004}, {1171, 663}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{190, 38}, {1171, 663}}</string>
+					<string>{{95, 1004}, {1171, 663}}</string>
 					<integer value="1"/>
 					<string>{{352, 572}, {167, 30}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{467, 532}, {617, 169}}</string>
+					<string>{{372, 1498}, {617, 169}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{138, 584}, {616, 0}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2544,6 +2658,10 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{593, 1586}, {134, 23}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
@@ -2597,7 +2715,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">446</int>
+			<int key="maxID">457</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2610,10 +2728,12 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>browse:</string>
+							<string>change_instance:</string>
 							<string>start:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -2623,15 +2743,23 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>browse_button</string>
+							<string>instance_configs</string>
+							<string>instance_selector</string>
 							<string>outputView</string>
+							<string>selected_instance</string>
 							<string>start_button</string>
 							<string>stream_in</string>
 							<string>stream_out</string>
 							<string>task</string>
+							<string>tasks</string>
 							<string>webView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2649,6 +2777,14 @@
 			</object>
 			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSActionCell</string>
+					<string key="superclassName">NSCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSActionCell.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSApplication</string>
 					<string key="superclassName">NSResponder</string>
@@ -2698,6 +2834,30 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">AppKit.framework/Headers/NSBrowser.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSButton</string>
+					<string key="superclassName">NSControl</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSButton.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSButtonCell</string>
+					<string key="superclassName">NSActionCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSButtonCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSCell</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSCell.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -2807,6 +2967,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="405998742">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">AppKit.framework/Headers/NSMenuItem.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSMenuItemCell</string>
+					<string key="superclassName">NSButtonCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSMenuItemCell.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -3129,6 +3297,22 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">WebKit.framework/Headers/WebUIDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSPopUpButton</string>
+					<string key="superclassName">NSButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSPopUpButton.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSPopUpButtonCell</string>
+					<string key="superclassName">NSMenuItemCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSPopUpButtonCell.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
