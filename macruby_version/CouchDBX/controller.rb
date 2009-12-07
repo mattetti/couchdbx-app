@@ -4,34 +4,28 @@
 # Created by Matt Aimonetti on 12/2/09.
 # Copyright 2009 m|a agile. All rights reserved.
 require 'instance_config'
+require 'mr_task'
 
 class Controller
 
   attr_accessor :start_button, :browse_button
-  attr_accessor :task, :stream_in, :stream_out
+  attr_accessor :stream_in, :stream_out
   attr_accessor :selected_instance, :instance_selector, :instance_configs
-  attr_accessor :tasks
   attr_accessor :outputView, :webView
-  
-  def applicationShouldTerminateAfterLastWindowClosed(app)
-    true
-  end
-  
-  def windowWillClose(notification)
-    stop
-  end
   
   def awakeFromNib
     puts "loading code now that the nib loaded"
     browse_button.enabled = false
+    @logging_started = false
     resources_path = NSBundle.mainBundle.resourcePath.fileSystemRepresentation
     @instance_configs = Dir.glob(resources_path + '/couchdbx-core/couchdb/etc/couchdb/local*.ini').map do |file|
       
       conf = InstanceConfig.new(file)
       item = NSMenuItem.alloc.initWithTitle("port #{conf.port}", action: "change_instance:", keyEquivalent:'')
       instance_selector.addItem(item)
-      {:file => file, :url => conf.url, :port => conf.port, :task => NSTask.alloc.init }
+      {:file => file, :url => conf.url, :port => conf.port, :task => nil }
     end
+    @selected_instance = @instance_configs.first
     
     launchCouchDB
   end
@@ -43,10 +37,16 @@ class Controller
     url = NSURL.URLWithString("#{config[:url]}/_utils")
     webView.mainFrame.loadRequest NSURLRequest.requestWithURL(url)
     puts "switched to #{webView.mainFrameURL}"
+    update_start_button_status
   end
   
   def start(sender)
-    task.isRunning ? stop : launchCouchDB
+    if task
+      task.running? ? stop : launchCouchDB
+    else
+      fire_task(selected_instance)
+      switch_start_button
+    end
   end
   
   def browse(sender)
@@ -54,66 +54,59 @@ class Controller
   end
   
   def launchCouchDB
-    puts "launchCouchDB"
-        
     instance_configs.map{|config| fire_task(config) }
-
-    browse_button.enabled = true
-    start_button.setImage NSImage.imageNamed("stop.png")
-    start_button.label = "stop"
+    switch_start_button
     openFuton
   end
   
   def fire_task(config)
-    return if config[:task].isRunning
-    
-    config[:task] = NSTask.alloc.init if config[:started]
+    return if config[:task] && config[:task].running?    
     couchdbx_path = "#{NSBundle.mainBundle.resourcePath}/couchdbx-core"
-    config[:task].currentDirectoryPath = couchdbx_path
     launch_path = "#{couchdbx_path}/couchdb/bin/couchdb"
-    config[:task].launchPath = launch_path
     raise "couchdbx-core missing, expected to be found at: #{launch_path}" unless File.exist?(launch_path)
-    config[:task].arguments      = ['-i', '-a', config[:file]]
-  
-    pi = NSPipe.alloc.init
-    po = NSPipe.alloc.init
-    config[:task].standardInput  = pi
-    config[:task].standardOutput = po 
-    file_handle = po.fileHandleForReading 
-    file_handle.readInBackgroundAndNotify
     
-    config[:task].launch
-      
-    if config[:file] =~ /local.ini/
-      @task = config[:task]
-      @stream_in = pi
-      @stream_out = po                 
-      nc = NSNotificationCenter.defaultCenter
-      nc.addObserver(self, selector: "dataReady:", name: NSFileHandleReadCompletionNotification, object: file_handle)
-      nc.addObserver(self, selector: "taskTerminated:", name: NSTaskDidTerminateNotification, object: config[:task])
+    args = ['-i', '-a', config[:file]]
+    task = MrTask.new(launch_path, from_directory: couchdbx_path).on_output do |output|
+      log("#{config[:port]}: #{output}")
     end
-    
-    config[:started] = true
-    
+    task.launch(args)
+    config[:task] = task    
   end
   
-  
   def stop
-    writer = stream_in.fileHandleForWriting
-    writer.writeData "q().\n".dataUsingEncoding(NSUTF8StringEncoding)
-    writer.closeFile
+    selected_instance[:task].kill do
+       log("#{selected_instance[:port]}: closed")
+    end
+    selected_instance[:task] = nil
+    update_start_button_status('stop')
+  end
   
-    browse_button.enabled = false
-    start_button.image = NSImage.imageNamed("start.png")
-    start_button.label = "start"
+  def stop_all
+    instance_configs.each{|config| config[:task].kill; config[:task] = nil}
+  end
+  
+  def task
+    selected_instance[:task]
+  end
+  
+  def switch_start_button
+    label = start_button.label == "stop" ? "start" : "stop"
+    update_start_button_status(label)
+  end
+  
+  def update_start_button_status(label=nil)
+    if label.nil? && task && task.running?
+      label = "stop"
+    elsif label.nil?
+      label = "start"
+    end
+    start_button.setImage NSImage.imageNamed("#{label}.png")
+    start_button.label = label
+    browse_button.enabled = (label == 'start')
   end
   
   def taskTerminated(notification)
-    cleanup
-  end
-  
-  def cleanup  
-    NSNotificationCenter.defaultCenter.removeObserver(self)
+    # cleanup
   end
   
   def openFuton
@@ -123,19 +116,15 @@ class Controller
 	  webView.mainFrame.loadRequest request
   end
   
-  def appendData(data)
-    s = NSString.alloc.initWithData(data, encoding: NSUTF8StringEncoding)
+  def log(data_string)
     ts = outputView.textStorage
     range = NSMakeRange(ts.length, 0)
-    ts.replaceCharactersInRange(range, withString:s)
+    ts.replaceCharactersInRange(range, withString:data_string)
     outputView.scrollRangeToVisible(range, 0)
   end
   
-  
-  def dataReady(notification)
-    data = notification.userInfo[NSFileHandleNotificationDataItem]
-    appendData(data) if data
-    stream_out.fileHandleForReading.readInBackgroundAndNotify if task
-  end
+  # Application settings
+  def applicationShouldTerminateAfterLastWindowClosed(app); true; end
+  def windowWillClose(notification); stop_all; end
 
 end
