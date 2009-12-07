@@ -14,20 +14,24 @@ class Controller
   attr_accessor :outputView, :webView
   
   def awakeFromNib
-    puts "loading code now that the nib loaded"
-    browse_button.enabled = false
-    @logging_started = false
-    resources_path = NSBundle.mainBundle.resourcePath.fileSystemRepresentation
-    @instance_configs = Dir.glob(resources_path + '/couchdbx-core/couchdb/etc/couchdb/local*.ini').map do |file|
+    begin
+      puts "loading code now that the nib loaded"
+      browse_button.enabled = false
+      @logging_started = false
+      resources_path = NSBundle.mainBundle.resourcePath.fileSystemRepresentation
+      @instance_configs = Dir.glob(resources_path + '/couchdbx-core/couchdb/etc/couchdb/*.ini').map do |file|
+        next if file =~ /default\.ini/
+        conf = InstanceConfig.new(file)
+        item = NSMenuItem.alloc.initWithTitle("port #{conf.port}", action: "change_instance:", keyEquivalent:'')
+        instance_selector.addItem(item)
+        {:file => file, :url => conf.url, :port => conf.port, :task => nil }
+      end.compact
+      @selected_instance = @instance_configs.first
       
-      conf = InstanceConfig.new(file)
-      item = NSMenuItem.alloc.initWithTitle("port #{conf.port}", action: "change_instance:", keyEquivalent:'')
-      instance_selector.addItem(item)
-      {:file => file, :url => conf.url, :port => conf.port, :task => nil }
+      launchCouchDB
+    rescue Exception => e
+     raise "#{e}, #{e.backtrace}"
     end
-    @selected_instance = @instance_configs.first
-    
-    launchCouchDB
   end
   
   def change_instance(sender)
@@ -82,7 +86,10 @@ class Controller
   end
   
   def stop_all
-    instance_configs.each{|config| config[:task].kill; config[:task] = nil}
+    instance_configs.each do |config| 
+      next if config.nil?
+      config[:task].kill; config[:task] = nil
+    end
   end
   
   def task
