@@ -15,17 +15,19 @@ class Controller
   
   def awakeFromNib
     begin
-      puts "loading code now that the nib loaded"
       browse_button.enabled = false
       @logging_started = false
       resources_path = NSBundle.mainBundle.resourcePath.fileSystemRepresentation
       @instance_configs = Dir.glob(resources_path + '/couchdbx-core/couchdb/etc/couchdb/*.ini').map do |file|
         next if file =~ /default\.ini/
         conf = InstanceConfig.new(file)
-        item = NSMenuItem.alloc.initWithTitle("port #{conf.port}", action: "change_instance:", keyEquivalent:'')
-        instance_selector.addItem(item)
         {:file => file, :url => conf.url, :port => conf.port, :task => nil }
       end.compact
+      
+      @instance_configs.sort{|a,b| a[:port].to_i <=> b[:port].to_i }.each do |conf|
+        item = NSMenuItem.alloc.initWithTitle("port #{conf[:port]}", action: "change_instance:", keyEquivalent:'')
+        instance_selector.addItem(item)
+      end
       @selected_instance = @instance_configs.first
       
       launchCouchDB
@@ -40,7 +42,7 @@ class Controller
     @selected_instance = config
     url = NSURL.URLWithString("#{config[:url]}/_utils")
     webView.mainFrame.loadRequest NSURLRequest.requestWithURL(url)
-    puts "switched to #{webView.mainFrameURL}"
+    # puts "switched to #{webView.mainFrameURL}"
     update_start_button_status
   end
   
@@ -58,7 +60,7 @@ class Controller
   end
   
   def launchCouchDB
-    instance_configs.map{|config| fire_task(config) }
+    instance_configs.sort{|a,b| a[:port].to_i <=> b[:port].to_i }.map{|config| fire_task(config) }
     switch_start_button
     openFuton
   end
@@ -73,21 +75,22 @@ class Controller
     task = MrTask.new(launch_path, from_directory: couchdbx_path).on_output do |output|
       log("#{config[:port]}: #{output}")
     end
+    # puts "launching from #{couchdbx_path}: #{launch_path} #{args.join(' ')}"
     task.launch(args)
     config[:task] = task    
   end
   
   def stop
+    update_start_button_status('start')
     selected_instance[:task].kill do
        log("#{selected_instance[:port]}: closed")
     end
     selected_instance[:task] = nil
-    update_start_button_status('stop')
   end
   
   def stop_all
     instance_configs.each do |config| 
-      next if config.nil?
+      next if config[:task].nil?
       config[:task].kill; config[:task] = nil
     end
   end
