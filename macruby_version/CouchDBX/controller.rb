@@ -56,7 +56,15 @@ class Controller
   end
   
   def browse(sender)
-    openFuton
+    url = NSURL.URLWithString("#{selected_instance[:url]}/_utils/")
+    request = NSURLRequest.requestWithURL(url)
+	  webView.mainFrame.loadRequest request
+  end
+  
+  def clear_logs(sender)
+    ts = outputView.textStorage
+    range = NSMakeRange(0, ts.length)
+    ts.replaceCharactersInRange(range, withString:"")
   end
   
   def launchCouchDB
@@ -112,7 +120,7 @@ class Controller
     end
     start_button.setImage NSImage.imageNamed("#{label}.png")
     start_button.label = label
-    browse_button.enabled = (label == 'start')
+    browse_button.enabled = (label == 'stop')
   end
   
   def taskTerminated(notification)
